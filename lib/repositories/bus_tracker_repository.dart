@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
+import 'package:bus_trackr/errors/broker_failure.dart';
 import 'package:bus_trackr/errors/custom_exception.dart';
-import 'package:bus_trackr/errors/failure.dart';
 import 'package:bus_trackr/models/bus_details.dart';
 import 'package:bus_trackr/models/certificate.dart';
 import 'package:bus_trackr/services/bus_tracker_service.dart';
@@ -17,7 +17,7 @@ class BusTrackerRepository {
 
   final BusTrackerService busTrackerService;
 
-  Stream<Either<Failure, BusDetails>> get trackerStream {
+  Stream<Either<BrokerFailure, BusDetails>> get trackerStream {
     final topic = dotenv.env['TOPIC']!;
     const port = 8883;
     const keepAlivePeriod = 20;
@@ -37,10 +37,10 @@ class BusTrackerRepository {
       deviceCertificateAssetPath: deviceCertificateAssetPath,
     );
 
-    late StreamController<Either<Failure, BusDetails>> streamController;
+    late StreamController<Either<BrokerFailure, BusDetails>> streamController;
     late StreamSubscription<BusDetails> streamSubscription;
 
-    streamController = StreamController<Either<Failure, BusDetails>>(
+    streamController = StreamController<Either<BrokerFailure, BusDetails>>(
       onListen: () {
         streamSubscription = busTrackerService
             .messageStream(
@@ -76,8 +76,8 @@ class BusTrackerRepository {
     return streamController.stream;
   }
 
-  Failure _computeFailure(dynamic error) {
-    late Failure failure;
+  BrokerFailure _computeFailure(dynamic error) {
+    late BrokerFailure failure;
 
     switch (error.runtimeType) {
       case NoMessagesFromBrokerException:
