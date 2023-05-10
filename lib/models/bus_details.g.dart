@@ -7,19 +7,20 @@ part of 'bus_details.dart';
 // **************************************************************************
 
 BusDetails _$BusDetailsFromJson(Map<String, dynamic> json) => BusDetails(
-      currentPosition: Coordinates.fromJson(
-          json['current_position'] as Map<String, dynamic>),
-      vehiclePlateNumber: json['vehicle_plate_number'] as String,
-      price: json['price'] as num,
-      destination: json['destination'] as String,
-      terminal: Coordinates.fromJson(json['terminal'] as Map<String, dynamic>),
+      latitude: json['lat'] as num,
+      longitude: json['lng'] as num,
+      plateNumber: json['plate_no'] as String,
+      cardAccess: json['card_access'] as String,
+      occupiedSeat: json['occupied_seat'] as num,
+      availableSeat: json['available_seat'] as num,
     );
 
 Map<String, dynamic> _$BusDetailsToJson(BusDetails instance) =>
     <String, dynamic>{
-      'current_position': instance.currentPosition,
-      'vehicle_plate_number': instance.vehiclePlateNumber,
-      'price': instance.price,
-      'destination': instance.destination,
-      'terminal': instance.terminal,
+      'lat': instance.latitude,
+      'lng': instance.longitude,
+      'plate_no': instance.plateNumber,
+      'card_access': instance.cardAccess,
+      'occupied_seat': instance.occupiedSeat,
+      'available_seat': instance.availableSeat,
     };
